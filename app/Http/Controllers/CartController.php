@@ -54,51 +54,128 @@ class CartController extends Controller
         return back();       
     }  
 
-    public function singleAddToCart(Request $request){
-        $request->validate([
-            'slug'      =>  'required',
-            'quant'      =>  'required',
-        ]);
-        // dd($request->quant[1]);
+//                                     SingleAddToCart demo - START end on 106
+
+    // public function singleAddToCart(Request $request){
+    //     $request->validate([
+    //         'sizes'    => 'required',
+    //         'slug'      =>  'required',
+    //         'quant'      =>  'required',
+    //     ]);
+    //     //  dd($request->quant[1]);
+    //     // dd($request);
 
 
-        $product = Product::where('slug', $request->slug)->first();
-        if($product->stock <$request->quant[1]){
-            return back()->with('error','Out of stock, You can add other products.');
-        }
-        if ( ($request->quant[1] < 1) || empty($product) ) {
-            request()->session()->flash('error','Invalid Products');
-            return back();
-        }    
+    //     $product = Product::where('slug', $request->slug)->first();
+    //     // dd($product->size);
+    //     if($product->stock <$request->quant[1]){
+    //         return back()->with('error','Out of stock, You can add other products.');
+    //     }
+    //     if ( ($request->quant[1] < 1) || empty($product) ) {
+    //         request()->session()->flash('error','Invalid Products');
+    //         return back();
+    //     }    
 
-        $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)->first();
+    //     $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)->first();       
+    //     if($already_cart) {
 
-        // return $already_cart;
+    //         // $already_cart->quantity = $already_cart->quantity + $request->quant[1];
+    //         // // $already_cart->price = ($product->price * $request->quant[1]) + $already_cart->price ;
+    //         // $already_cart->amount = ($product->price * $request->quant[1])+ $already_cart->amount;
 
-        if($already_cart) {
-            $already_cart->quantity = $already_cart->quantity + $request->quant[1];
-            // $already_cart->price = ($product->price * $request->quant[1]) + $already_cart->price ;
-            $already_cart->amount = ($product->price * $request->quant[1])+ $already_cart->amount;
+    //         if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
 
-            if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
-
-            $already_cart->save();
+    //         $already_cart->save();
+        
             
-        }else{
+    //     }else{
             
-            $cart = new Cart;
-            $cart->user_id = auth()->user()->id;
-            $cart->product_id = $product->id;
-            $cart->price = ($product->price-($product->price*$product->discount)/100);
-            $cart->quantity = $request->quant[1];
-            $cart->amount=($product->price * $request->quant[1]);
-            if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
-            // return $cart;
-            $cart->save();
-        }
-        request()->session()->flash('success','Product successfully added to cart.');
-        return back();       
-    } 
+    //         $cart = new Cart;
+    //         $cart->user_id = auth()->user()->id;
+    //         $cart->product_id = $product->id;
+    //         $cart->price = ($product->price-($product->price*$product->discount)/100);
+    //         $cart->quantity = $request->quant[1];
+    //         foreach($request->sizes as $request->size )
+    //         $cart->size = $request->size;
+    //         $cart->amount=($product->price * $request->quant[1]);
+    //         if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
+    //         // return $cart;
+    //         $cart->save();
+    //     }
+    //     request()->session()->flash('success','Product successfully added to cart.');
+    //     return back();       
+    // } 
+
+//                                     SingleAddToCart demo - end
+
+
+public function singleAddToCart(Request $request){
+    $request->validate([
+        'slug'      =>  'required',
+        'quant'      =>  'required',
+    ]);
+    //  dd($request->quant[1]);
+    // dd($request);
+
+
+    $product = Product::where('slug', $request->slug)->first();
+    if($product->stock <$request->quant[1]){
+        return back()->with('error','Out of stock, You can add other products.');
+    }
+    if ( ($request->quant[1] < 1) || empty($product) ) {
+        request()->session()->flash('error','Invalid Products');
+        return back();
+    }    
+
+    $already_cart = Cart::where('user_id', auth()->user()->id)->where('order_id',null)->where('product_id', $product->id)->first();
+
+    // return $already_cart;
+
+    if($already_cart) {
+        foreach($request->sizes as $request->size)
+        //dd($already_cart->size==$request->size);
+        if($already_cart->size==$request->size || $already_cart->product->stock <= 0 ){
+            
+        $already_cart->quantity = $already_cart->quantity + $request->quant[1];
+        // dd($already_cart->quantity);
+        // $already_cart->price = ($product->price * $request->quant[1]) + $already_cart->price ;
+        $already_cart->amount = ($product->price * $request->quant[1])+ $already_cart->amount;
+
+        if ($already_cart->product->stock < $already_cart->quantity || $already_cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
+        
+        $already_cart->save();
+        
+    }else{$cart = new Cart;
+        $cart->user_id = auth()->user()->id;
+        $cart->product_id = $product->id;
+        $cart->price = ($product->price-($product->price*$product->discount)/100);
+        $cart->quantity = $request->quant[1];
+        foreach($request->sizes as $request->size )
+       $cart->size = $request->size;
+        $cart->amount=($product->price * $request->quant[1]);
+        if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
+        // return $cart;
+        $cart->save();
+    }
+    }else{
+        
+        $cart = new Cart;
+        $cart->user_id = auth()->user()->id;
+        $cart->product_id = $product->id;
+        $cart->price = ($product->price-($product->price*$product->discount)/100);
+        $cart->quantity = $request->quant[1];
+        foreach($request->sizes as $request->size )
+       $cart->size = $request->size;
+        $cart->amount=($product->price * $request->quant[1]);
+        if ($cart->product->stock < $cart->quantity || $cart->product->stock <= 0) return back()->with('error','Stock not sufficient!.');
+        // return $cart;
+        $cart->save();
+        
+
+    }
+    request()->session()->flash('success','Product successfully added to cart.');
+    return back();       
+}
     
     public function cartDelete(Request $request){
         $cart = Cart::find($request->id);

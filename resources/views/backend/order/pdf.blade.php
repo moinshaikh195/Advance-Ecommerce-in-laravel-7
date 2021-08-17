@@ -114,6 +114,7 @@
         <tr>
           <th scope="col" class="col-6">Product</th>
           <th scope="col" class="col-3">Quantity</th>
+          <th scope="col" class="col-3">Size</th>
           <th scope="col" class="col-3">Total</th>
         </tr>
       </thead>
@@ -129,6 +130,7 @@
               @endforeach
             </span></td>
           <td>x{{$cart->quantity}}</td>
+          <td>{{$cart->size}}</td>
           <td><span>${{number_format($cart->price,2)}}</span></td>
         </tr>
       @endforeach

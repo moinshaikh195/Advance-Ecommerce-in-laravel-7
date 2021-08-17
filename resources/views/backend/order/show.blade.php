@@ -2,9 +2,12 @@
 
 @section('title','Order Detail')
 
+
+
 @section('main-content')
 <div class="card">
-<h5 class="card-header">Order       <a href="{{route('order.pdf',$order->id)}}" class=" btn btn-sm btn-primary shadow-sm float-right"><i class="fas fa-download fa-sm text-white-50"></i> Generate PDF</a>
+<h5 class="card-header">Order
+  <a href="{{route('order.pdf',$order->id)}}" class=" btn btn-sm btn-primary shadow-sm float-right"><i class="fas fa-download fa-sm text-white-50"></i> Generate PDF</a>
   </h5>
   <div class="card-body">
     @if($order)
@@ -137,6 +140,41 @@
                         <td> : {{$order->post_code}}</td>
                     </tr>
               </table>
+            </div>
+          </div>
+          <div class="col-lg-6 col-lx-4">
+            <div class="shipping-info">
+              <h4 class="text-center pb-4">PRODUCT INFORMATION</h4>
+              {{-- @dd($order->cart_info) --}}
+              @foreach ($order->cart_info as $cart )
+              @php 
+              $product=DB::table('products')->select('title')->where('id',$cart->product_id)->get();
+             @endphp
+              
+              <table class="table">
+                    <tr class="">
+                      @foreach($product as $pro)
+                      
+                      <td>Product Name</td>
+                      <td> : {{$pro->title}}</td>
+                  
+                    @endforeach
+                    </tr>
+                    <tr>
+                      <td>Product ID</td>
+                      <td> :  {{$cart->product_id}}</td>
+                  </tr>
+                    <tr>
+                        <td>Product Quantity</td>
+                        <td> :  {{$cart->quantity}}</td>
+                    </tr>
+                    <tr>
+                        <td>Product Size</td>
+                        <td> : {{$cart->size}} Size</td>
+                    </tr>
+                    
+              </table>
+              @endforeach
             </div>
           </div>
         </div>

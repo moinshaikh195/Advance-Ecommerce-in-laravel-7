@@ -52,7 +52,8 @@ class OrderController extends Controller
             'coupon'=>'nullable|numeric',
             'phone'=>'numeric|required',
             'post_code'=>'string|nullable',
-            'email'=>'string|required'
+            'email'=>'string|required',
+            'shipping'=> 'numeric|required'
         ]);
         // return $request->all();
 
@@ -90,6 +91,7 @@ class OrderController extends Controller
 
         $order=new Order();
         $order_data=$request->all();
+        //dd($order_data);
         $order_data['order_number']='ORD-'.strtoupper(Str::random(10));
         $order_data['user_id']=$request->user()->id;
         $order_data['shipping_id']=$request->shipping;
@@ -97,6 +99,7 @@ class OrderController extends Controller
         // return session('coupon')['value'];
         $order_data['sub_total']=Helper::totalCartPrice();
         $order_data['quantity']=Helper::cartCount();
+        //dd($cart->size);
         if(session('coupon')){
             $order_data['coupon']=session('coupon')['value'];
         }
@@ -272,7 +275,7 @@ class OrderController extends Controller
     // PDF generate
     public function pdf(Request $request){
         $order=Order::getAllOrder($request->id);
-        // return $order;
+        //dd($order) ;
         $file_name=$order->order_number.'-'.$order->first_name.'.pdf';
         // return $file_name;
         $pdf=PDF::loadview('backend.order.pdf',compact('order'));

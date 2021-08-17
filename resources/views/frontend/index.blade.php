@@ -159,9 +159,9 @@
                                                     <a data-toggle="modal" data-target="#{{$product->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
                                                     <a title="Wishlist" href="{{route('add-to-wishlist',$product->slug)}}" ><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
                                                 </div>
-                                                <div class="product-action-2">
+                                                {{-- <div class="product-action-2">
                                                     <a title="Add to cart" href="{{route('add-to-cart',$product->slug)}}">Add to cart</a>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </div>
                                         <div class="product-content">
@@ -443,7 +443,7 @@
 </section>
 <!-- End Shop Services Area -->
 
-@include('frontend.layouts.newsletter')
+{{-- @include('frontend.layouts.newsletter') --}}
 
 <!-- Modal -->
 @if($product_lists)

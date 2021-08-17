@@ -35,14 +35,19 @@ return [
         'redirect' => 'http://localhost:8000/login/github/callback',
      ],
      'google' => [
-        'client_id' => '122886334250-fsfd8ugugkr0hjrkakukbgnnruomjn95.apps.googleusercontent.com', //Google API
-        'client_secret' => 'eyuwbzXGBgbebzPXNiqSOods', //Google Secret
+        'client_id' => '172055575569-pqs9m1tkvi5p9ujkselrho46a3a1hr6g.apps.googleusercontent.com', //Google API
+        'client_secret' => 'SnUn1X6uzMnrJ5AlHSsR4F3t', //Google Secret
         'redirect' => 'http://localhost:8000/login/google/callback',
      ],
      'facebook' => [
-        'client_id' => '1494792524037846', //Facebook API
-        'client_secret' => '1bf13c2faf680f4ae2b97bdafa92c7d2', //Facebook Secret
+        'client_id' => '806704689966887', //Facebook API
+        'client_secret' => 'f1b11c99375a535dcbaadc15882ca1f6', //Facebook Secret
         'redirect' => 'http://localhost:8000/login/facebook/callback',
      ],
+     'twitter' => [
+        'client_id'     => env('TWITTER_CLIENT_ID'),
+        'client_secret' => env('TWITTER_CLIENT_SECRET'),
+        'redirect'      => env('TWITTER_URL'),
+    ],
 
 ];

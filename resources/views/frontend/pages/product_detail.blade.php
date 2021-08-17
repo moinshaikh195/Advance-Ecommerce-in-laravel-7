@@ -100,25 +100,37 @@
 											</div> --}}
 											<!--/ End Color -->
 											<!-- Size -->
-											@if($product_detail->size)
-												<div class="size mt-4">
+											
+											<!-- Product Buy -->
+											<div class="product-buy">
+												<form action="{{route('single-add-to-cart')}}" method="POST">
+													@csrf
+													@if($product_detail->size)
+												   <div class="size mt-4">
 													<h4>Size</h4>
-													<ul>
+													{{-- <ul>
 														@php 
 															$sizes=explode(',',$product_detail->size);
-															// dd($sizes);
+															 //dd($sizes);
 														@endphp
 														@foreach($sizes as $size)
 														<li><a href="#" class="one">{{$size}}</a></li>
 														@endforeach
-													</ul>
+													</ul> --}}
+													@php 
+															$sizes=explode(',',$product_detail->size);
+															 //dd($sizes);
+														@endphp
+													<select class="form-control select2" name="sizes[]" multiple="multiple"  data-placeholder="--- Choose from the List ---" style="width: 100%;">
+														@foreach($sizes as $size)
+														  <option value="{{$size}}">  {{$size}}</a></option>
+														  
+														  @endforeach                        
+													  </select>
 												</div>
 											@endif
-											<!--/ End Size -->
-											<!-- Product Buy -->
-											<div class="product-buy">
-												<form action="{{route('single-add-to-cart')}}" method="POST">
-													@csrf 
+											<br>
+											<!--/ End Size --> 
 													<div class="quantity">
 														<h6>Quantity :</h6>
 														<!-- Input Order -->
@@ -332,13 +344,13 @@
                                         </a>
                                         <div class="button-head">
                                             <div class="product-action">
-                                                <a data-toggle="modal" data-target="#modelExample" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
+                                                <a data-toggle="modal" data-target="#{{$data->id}}" title="Quick View" href="#"><i class=" ti-eye"></i><span>Quick Shop</span></a>
                                                 <a title="Wishlist" href="#"><i class=" ti-heart "></i><span>Add to Wishlist</span></a>
                                                 <a title="Compare" href="#"><i class="ti-bar-chart-alt"></i><span>Add to Compare</span></a>
                                             </div>
-                                            <div class="product-action-2">
+                                            {{-- <div class="product-action-2">
                                                 <a title="Add to cart" href="#">Add to cart</a>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </div>
                                     <div class="product-content">

@@ -31,6 +31,7 @@
 								<th>NAME</th>
 								<th class="text-center">UNIT PRICE</th>
 								<th class="text-center">QUANTITY</th>
+								<th class="text-center">Size</th>
 								<th class="text-center">TOTAL</th> 
 								<th class="text-center"><i class="ti-trash remove-icon"></i></th>
 							</tr>
@@ -53,9 +54,20 @@
 											<td class="qty" data-title="Qty"><!-- Input Order -->
 												<div class="input-group">
 													<div class="button minus">
+														{{-- <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[{{$key}}]">
+															<i class="ti-minus"></i>
+														</button> --}}
+													    @if ($cart->quantity <= 1)
 														<button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[{{$key}}]">
 															<i class="ti-minus"></i>
-														</button>
+														</button>										
+					                                    @else
+														<button type="button" class="btn btn-primary btn-number"  data-type="minus" data-field="quant[{{$key}}]">
+															<i class="ti-minus"></i>
+														</button>	
+														@endif
+										
+														
 													</div>
 													<input type="text" name="quant[{{$key}}]" class="input-number"  data-min="1" data-max="100" value="{{$cart->quantity}}">
 													<input type="hidden" name="qty_id[]" value="{{$cart->id}}">
@@ -67,12 +79,13 @@
 												</div>
 												<!--/ End Input Order -->
 											</td>
+											<td class="total-amount cart_single_size" data-title="Size"><span class="size">{{$cart['size']}}</span></td>
 											<td class="total-amount cart_single_price" data-title="Total"><span class="money">${{$cart['amount']}}</span></td>
 											
 											<td class="action" data-title="Remove"><a href="{{route('cart-delete',$cart->id)}}"><i class="ti-trash remove-icon"></i></a></td>
 										</tr>
 									@endforeach
-									<track>
+									<track>     
 										<td></td>
 										<td></td>
 										<td></td>
@@ -123,26 +136,8 @@
 								<div class="right">
 									<ul>
 										<li class="order_subtotal" data-price="{{Helper::totalCartPrice()}}">Cart Subtotal<span>${{number_format(Helper::totalCartPrice(),2)}}</span></li>
-										{{-- <div id="shipping" style="display:none;">
-											<li class="shipping">
-												Shipping {{session('shipping_price')}}
-												@if(count(Helper::shipping())>0 && Helper::cartCount()>0)
-													<div class="form-select">
-														<select name="shipping" class="nice-select">
-															<option value="">Select</option>
-															@foreach(Helper::shipping() as $shipping)
-															<option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: ${{$shipping->price}}</option>
-															@endforeach
-														</select>
-													</div>
-												@else 
-													<div class="form-select">
-														<span>Free</span>
-													</div>
-												@endif
-											</li>
-										</div>
-										 --}}
+										
+										
 										 {{-- {{dd(Session::get('coupon')['value'])}} --}}
 										@if(session()->has('coupon'))
 										<li class="coupon_price" data-price="{{Session::get('coupon')['value']}}">You Save<span>${{number_format(Session::get('coupon')['value'],2)}}</span></li>
@@ -160,7 +155,12 @@
 										@endif
 									</ul>
 									<div class="button5">
+										@if ($total_amount == 0)
+										<h3>Start Your Shopping !!!</h3>	
+										@else
 										<a href="{{route('checkout')}}" class="btn">Checkout</a>
+										@endif
+										
 										<a href="{{route('product-grids')}}" class="btn">Continue shopping</a>
 									</div>
 								</div>

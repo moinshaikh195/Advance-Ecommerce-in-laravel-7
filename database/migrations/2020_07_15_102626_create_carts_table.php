@@ -21,6 +21,7 @@ class CreateCartsTable extends Migration
             $table->float('price');
             $table->enum('status',['new','progress','delivered','cancel'])->default('new');
             $table->integer('quantity');
+            $table->string('size');
             $table->float('amount');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('CASCADE');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
@@ -37,5 +38,9 @@ class CreateCartsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('carts');
+        Schema::table('carts', function($table) {
+            $table->dropColumn('size');
+        });
+    
     }
 }

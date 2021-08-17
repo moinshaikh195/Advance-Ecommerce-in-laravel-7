@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/create-symlink', function (){
+    symlink(storage_path('/app/public'), public_path('storage'));
+    echo "Symlink Created. Thanks";
+});
 
 Auth::routes(['register'=>false]);
 

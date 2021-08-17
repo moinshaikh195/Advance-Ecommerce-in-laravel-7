@@ -365,12 +365,15 @@
                                             <li class="shipping">
                                                 Shipping Cost
                                                 @if(count(Helper::shipping())>0 && Helper::cartCount()>0)
-                                                    <select name="shipping" class="nice-select">
+                                                    <select required name="shipping" class="nice-select">
                                                         <option value="">Select your address</option>
                                                         @foreach(Helper::shipping() as $shipping)
                                                         <option value="{{$shipping->id}}" class="shippingOption" data-price="{{$shipping->price}}">{{$shipping->type}}: ${{$shipping->price}}</option>
                                                         @endforeach
                                                     </select>
+                                                    @error('shipping')
+                                                <span class='text-danger'>{{$message}}</span>
+                                            @enderror
                                                 @else 
                                                     <span>Free</span>
                                                 @endif
